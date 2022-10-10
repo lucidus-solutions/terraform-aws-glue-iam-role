@@ -13,35 +13,25 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-data "aws_iam_policy_document" "main" {
+data "aws_iam_policy_document" "this" {
 
   statement {
-    sid = "ListBucket"
+    sid = "glueListBucket"
     actions = [
       "s3:GetBucketLocation",
-      "s3:GetBucketRequestPayment",
       "s3:GetEncryptionConfiguration",
       "s3:ListBucket",
     ]
-    effect    = length(var.buckets) > 0 ? "Allow" : "Deny"
-    resources = length(var.buckets) > 0 ? var.buckets : ["*"]
+    effect    = "Allow"
+    resources = var.s3_buckets
   }
 
   statement {
-    sid = "GetObject"
+    sid = "glueGetObject"
     actions = [
       "s3:GetObject",
     ]
-    effect    = length(var.buckets) > 0 ? "Allow" : "Deny"
-    resources = length(var.buckets) > 0 ? formatlist("%s/*", var.buckets) : ["*"]
-  }
-
-  statement {
-    sid = "Decrypt"
-    actions = [
-      "kms:Decrypt",
-    ]
-    effect    = length(var.keys) > 0 ? "Allow" : "Deny"
-    resources = length(var.keys) > 0 ? var.keys : ["*"]
+    effect    = "Allow"
+    resources = formatlist("%s/*", var.s3_buckets)
   }
 }
