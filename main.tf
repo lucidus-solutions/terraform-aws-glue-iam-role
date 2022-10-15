@@ -2,6 +2,7 @@ resource "aws_iam_role" "this" {
   name               = "${local.iam_stack}-glue-iam-role"
   description        = "A role that the Glue service can assume to perform actions in support of the ${var.app} project"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  force_detach_policies = var.force_detach_policies
 }
 
 resource "aws_iam_policy" "this" {
