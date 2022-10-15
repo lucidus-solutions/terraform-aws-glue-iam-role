@@ -11,10 +11,10 @@ variable "env" {
 }
 
 variable "force_detach_policies" {
-  type = string 
+  type        = string
   description = ""
-  default = false 
-  sensitive = false
+  default     = false
+  sensitive   = false
 }
 
 variable "program" {
